@@ -1,0 +1,24 @@
+{
+  "name": "rapidapp-mcp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\""
+  },
+  "files": [
+    "build"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "@rapidappio/rapidapp-node": "^1.0.1"
+  }
+}
