@@ -52,6 +52,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             {
                 name: "list_databases",
                 description: "List all Rapidapp PostgreSQL databases",
+                inputSchema: {
+                    type: "object",
+                    properties: {},
+                    required: [],
+                },
             },
             {
                 name: "get_database",
@@ -112,7 +117,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 content: [
                     {
                         type: "text",
-                        text: database,
+                        text: `Host: ${database.getHost()}, Port: ${database.getPort()}, User: ${database.getUsername()}, Password: ${database.getPassword()}`,
                     },
                 ],
             };
@@ -137,7 +142,6 @@ async function main() {
     try {
         const transport = new StdioServerTransport();
         await server.connect(transport);
-        console.info("Rapidapp MCP Server running on stdio");
     } catch (error) {
         console.error("Error during startup:", error);
         process.exit(1);
