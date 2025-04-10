@@ -7,8 +7,7 @@ import {
 import { z } from "zod";
 import {RapidappClient} from "@rapidappio/rapidapp-node";
 
-// Get Rapidapp API Key from command line args
-const RAPIDAPP_API_KEY = process.argv[2];
+const RAPIDAPP_API_KEY = process.env.RAPIDAPP_API_KEY || "";
 const rapidappClient = new RapidappClient({
     apiKey: RAPIDAPP_API_KEY,
 });
@@ -73,6 +72,9 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 
 // Handle tool execution
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    if (!RAPIDAPP_API_KEY || RAPIDAPP_API_KEY.trim() === "") {
+        throw new Error("RAPIDAPP_API_KEY environment variable not set. Please set this variable to use the Rapidapp API.");
+    }
     const { name, arguments: args } = request.params;
 
     try {
@@ -134,7 +136,7 @@ async function main() {
     try {
         const transport = new StdioServerTransport();
         await server.connect(transport);
-        console.error("Rapidapp MCP Server running on stdio");
+        console.info("Rapidapp MCP Server running on stdio");
     } catch (error) {
         console.error("Error during startup:", error);
         process.exit(1);
