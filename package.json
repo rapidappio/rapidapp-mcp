@@ -6,7 +6,9 @@
     "rapidapp-mcp": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc && node -e \"require('fs').chmodSync('dist/index.js', '755')\""
+    "build": "tsc && shx chmod +x dist/*.js",
+    "prepare": "npm run build",
+    "watch": "tsc --watch"
   },
   "files": [
     "README.md",
@@ -19,7 +21,8 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^22.10.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "shx": "^0.3.4"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.4.0",
