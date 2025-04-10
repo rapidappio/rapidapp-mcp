@@ -73,12 +73,22 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     try {
         if (name === "create_database") {
             const { name } = CreateArgumentsSchema.parse(args);
-            await rapidappClient.createPostgres(name);
+            const databaseId = await rapidappClient.createPostgres(name);
+            if (!databaseId) {
+                throw new Error("Failed to create database");
+            }
+            let database;
+            do {
+                database = await rapidappClient.getPostgres(databaseId.getId());
+                if (database.getStatus() === "pending") {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                }
+            } while (database.getStatus() === "pending");
             return {
                 content: [
                     {
                         type: "text",
-                        text: `Successfully created database: ${name}`,
+                        text: `Successfully created database and it is running with the information Host: ${database.getHost()}, Port: ${database.getPort()}, User: ${database.getUsername()}, Password: ${database.getPassword()}`,
                     },
                 ],
             };
