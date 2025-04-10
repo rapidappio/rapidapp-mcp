@@ -26,7 +26,7 @@ const GetArgumentsSchema = z.object({
 // Create server instance
 const server = new Server(
     {
-        name: "rapidapp-mcp",
+        name: "rapidapp",
         version: "1.0.0"
     }
 );
@@ -52,7 +52,6 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             {
                 name: "list_databases",
                 description: "List all Rapidapp PostgreSQL databases",
-                inputSchema: {},
             },
             {
                 name: "get_database",
