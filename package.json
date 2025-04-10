@@ -3,6 +3,9 @@
   "version": "1.0.1",
   "main": "index.js",
   "type": "module",
+  "bin": {
+    "rapidapp-mcp": "./build/index.js"
+  },
   "scripts": {
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\""
   },
