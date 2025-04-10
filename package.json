@@ -1,18 +1,19 @@
 {
   "name": "@rapidappio/rapidapp-mcp",
-  "version": "1.0.4",
-  "type": "module",
+  "version": "1.0.5",
+  "type": "commonjs",
+  "main": "dist/index.js",
   "bin": {
-    "rapidapp-mcp": "./dist/index.js"
+    "rapidappmcp": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc && shx chmod +x dist/*.js",
-    "prepare": "npm run build",
-    "watch": "tsc --watch"
+    "build": "tsc && node build.mjs && chmod +x dist/index.js",
+    "start": "node dist/index.js",
+    "prepare": "npm run build"
   },
   "files": [
     "README.md",
-    "build",
+    "dist",
     "package.json"
   ],
   "keywords": [],
@@ -22,10 +23,17 @@
   "devDependencies": {
     "@types/node": "^22.10.2",
     "typescript": "^5.7.2",
-    "shx": "^0.3.4"
+    "shx": "^0.3.4",
+    "dotenv": "^16.4.7",
+    "esbuild": "^0.24.0"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.4.0",
     "@rapidappio/rapidapp-node": "^1.0.1"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
   }
 }
