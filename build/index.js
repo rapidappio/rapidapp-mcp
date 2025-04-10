@@ -1,36 +1,25 @@
 #!/usr/bin/env node
-
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {
-    CallToolRequestSchema,
-    ListToolsRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
+import { CallToolRequestSchema, ListToolsRequestSchema, } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
-import {RapidappClient} from "@rapidappio/rapidapp-node";
-
+import { RapidappClient } from "@rapidappio/rapidapp-node";
 const RAPIDAPP_API_KEY = process.env.RAPIDAPP_API_KEY || "";
 const rapidappClient = new RapidappClient({
     apiKey: RAPIDAPP_API_KEY,
 });
-
 // Define Zod schemas for validation
 const CreateArgumentsSchema = z.object({
     name: z.string(),
 });
-
 const GetArgumentsSchema = z.object({
     id: z.string(),
 });
-
 // Create server instance
-const server = new Server(
-    {
-        name: "rapidapp-mcp",
-        version: "1.0.0"
-    }
-);
-
+const server = new Server({
+    name: "rapidapp",
+    version: "1.0.0"
+});
 // List available tools
 server.setRequestHandler(ListToolsRequestSchema, async () => {
     return {
@@ -71,20 +60,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         ],
     };
 });
-
 // Handle tool execution
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
     if (!RAPIDAPP_API_KEY || RAPIDAPP_API_KEY.trim() === "") {
         throw new Error("RAPIDAPP_API_KEY environment variable not set. Please set this variable to use the Rapidapp API.");
     }
     const { name, arguments: args } = request.params;
-
     try {
         if (name === "create_database") {
             const { name } = CreateArgumentsSchema.parse(args);
-
             await rapidappClient.createPostgres(name);
-
             return {
                 content: [
                     {
@@ -93,9 +78,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                     },
                 ],
             };
-        } else if (name === "list_databases") {
+        }
+        else if (name === "list_databases") {
             const databases = await rapidappClient.listPostgres();
-
             const databaseList = databases.getItemsList().map(db => `${db.getId()}: ${db.getName()}`).join('\n');
             return {
                 content: [
@@ -104,10 +89,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                         text: `Databases:\n${databaseList}`,
                     },
                 ],
-            }
-        } else if (name === "get_database") {
+            };
+        }
+        else if (name === "get_database") {
             const { id } = GetArgumentsSchema.parse(args);
-
             const database = await rapidappClient.getPostgres(id);
             return {
                 content: [
@@ -117,34 +102,32 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                     },
                 ],
             };
-
-        } else {
+        }
+        else {
             throw new Error(`Unknown tool: ${name}`);
         }
-    } catch (error) {
+    }
+    catch (error) {
         if (error instanceof z.ZodError) {
-            throw new Error(
-                `Invalid arguments: ${error.errors
-                    .map((e) => `${e.path.join(".")}: ${e.message}`)
-                    .join(", ")}`
-            );
+            throw new Error(`Invalid arguments: ${error.errors
+                .map((e) => `${e.path.join(".")}: ${e.message}`)
+                .join(", ")}`);
         }
         throw error;
     }
 });
-
 // Start the server
 async function main() {
     try {
         const transport = new StdioServerTransport();
         await server.connect(transport);
         console.info("Rapidapp MCP Server running on stdio");
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Error during startup:", error);
         process.exit(1);
     }
 }
-
 main().catch((error) => {
     console.error("Fatal error in main():", error);
 });
