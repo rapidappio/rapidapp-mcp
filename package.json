@@ -1,7 +1,7 @@
 {
   "name": "@rapidappio/rapidapp-mcp",
-  "version": "1.0.2",
-  "main": "index.js",
+  "version": "1.0.3",
+  "main": "./build/index.js",
   "type": "module",
   "bin": {
     "rapidapp-mcp": "./build/index.js"
@@ -10,7 +10,9 @@
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\""
   },
   "files": [
-    "build"
+    "README.md",
+    "build",
+    "package.json"
   ],
   "keywords": [],
   "author": "",
