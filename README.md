@@ -12,7 +12,13 @@ This MCP server allows AI assistants to do PostgreSQL database operation through
 
 ## How to Use
 
-Invoke the Rapidapp tool directly in conversation by typing `@rapidapp`.
+In Claude Desktop, or any MCP Client, you can use natural language to accomplish things with Neon, such as:
+
+- `Create a new Rapidapp PostgreSQL database called 'products'`
+- `List all my Rapidapp PostgreSQL databases`
+- `Get details of my Rapidapp PostgreSQL database with id of '123456'`
+- `Create a Spring Boot application for simple product service with CRUD operations. Use the Rapidapp PostgreSQL database 'products' as the backend. Configure the application to connect to the database.`
+
 
 #### API Key Requirement
 
