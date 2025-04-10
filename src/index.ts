@@ -103,7 +103,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
                 content: [
                     {
                         type: "text",
-                        text: `Successfully created database and it is running with the information Host: ${database.getHost()}, Port: ${database.getPort()}, User: ${database.getUsername()}, Password: ${database.getPassword()}`,
+                        text: `Successfully created database and it is running with the information Host: ${database.getHost()}, Port: ${database.getPort()}, User: ${database.getUsername()}, Password: ${database.getPassword()}, Database: ${database.getDatabase()}`,
                     },
                 ],
             };
