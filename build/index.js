@@ -17,7 +17,7 @@ const GetArgumentsSchema = z.object({
 });
 // Create server instance
 const server = new Server({
-    name: "rapidapp",
+    name: "rapidapp-mcp",
     version: "1.0.0"
 });
 // List available tools
