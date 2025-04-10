@@ -1,6 +1,6 @@
 FROM node:22.12-alpine as builder
 
-COPY src/redis /app
+COPY . /app
 
 WORKDIR /app
 
