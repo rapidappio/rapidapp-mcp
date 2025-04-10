@@ -16,5 +16,8 @@ startCommand:
     |-
     (config) => ({
       command: 'node',
-      args: ['build/index.js', config.rapidappApiKey],
+      args: ['build/index.js'],
+      env: {
+        RAPIDAPP_API_KEY: config.rapidappApiKey,
+      },
     })
